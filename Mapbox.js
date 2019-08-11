@@ -24,6 +24,8 @@ module.exports = {
           }
         );
       } catch (error) {
+        console.log("Error: Unable to connect to MapBox!");
+
         console.log(error);
         reject(error);
       }

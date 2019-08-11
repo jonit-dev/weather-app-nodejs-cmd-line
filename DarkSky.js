@@ -17,6 +17,8 @@ const fetchWeatherInfo = (lat, lng) => {
         }
       );
     } catch (error) {
+      console.log("Error: Unable to fetch weather information!");
+
       console.log(error);
       reject(error);
     }
