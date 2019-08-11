@@ -13,13 +13,16 @@ const fetchWeatherInfo = (lat, lng) => {
         (error, response) => {
           //callback
 
+          if (error) {
+            reject(error);
+          } else if (response.body.code) {
+            reject(error);
+          }
+
           return resolve(response.body);
         }
       );
     } catch (error) {
-      console.log("Error: Unable to fetch weather information!");
-
-      console.log(error);
       reject(error);
     }
   });

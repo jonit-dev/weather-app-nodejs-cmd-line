@@ -20,13 +20,16 @@ module.exports = {
           (error, response) => {
             //callback
 
+            if (error) {
+              reject(error);
+            } else if (response.body.code) {
+              reject(error);
+            }
+
             return resolve(response.body);
           }
         );
       } catch (error) {
-        console.log("Error: Unable to connect to MapBox!");
-
-        console.log(error);
         reject(error);
       }
     });
