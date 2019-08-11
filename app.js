@@ -29,6 +29,12 @@ yargs.command({
       .then(response => {
         console.log("Getting address weather information...");
 
+        if (!response.features.length) {
+          console.log(chalk.red("No results found!"));
+
+          return false;
+        }
+
         const [lng, lat] = response.features[0].center;
         const { place_name } = response.features[0];
 
