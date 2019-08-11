@@ -1,11 +1,21 @@
-Instructions
+# NodeJS Weather App
 
-=======================
+Simple weather app to fetch info from DarkSky API and MapboxGL through command line (yargs).
 
-1. Run sudo npm install
+## Getting Started
 
-2. Example of weather information request:
+### Install Dependencies
+
+```
+sudo npm install
+```
+
+### Executing program
 
 ```
 node app.js check_weather --address="Palo alto"
 ```
+
+## Authors
+
+Joao Paulo Furtado
