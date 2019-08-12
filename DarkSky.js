@@ -12,12 +12,12 @@ const fetchWeatherInfo = (lat, lng, callback) => {
       //callback
 
       if (error) {
-        callback(error, undefined);
+        callback("Unable to connect to weather services", undefined);
       } else if (response.body.code) {
-        callback(error, undefined);
+        callback("Unable to find location", undefined);
+      } else {
+        return callback(undefined, response.body);
       }
-
-      return callback(undefined, response.body);
     }
   );
 };
