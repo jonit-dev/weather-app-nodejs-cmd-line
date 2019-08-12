@@ -25,49 +25,34 @@ yargs.command({
 
     //address: https://api.mapbox.com/geocoding/v5/mapbox.places/Los%20Angeles.json?access_token=pk.eyJ1Ijoiam9uaXQiLCJhIjoiY2p6NjhmaXBwMDRsbjNubWl1OGFrb2lpMCJ9.NJYtPHNvyQEdHqQSCy9y7A
 
-    MapBox.getAddressLatLng(address)
-      .then(response => {
-        console.log("Getting address weather information...");
+    MapBox.getAddressLatLng(address, (error, data) => {
+      if (error) {
+        console.log(error);
+        return false;
+      }
 
-        if (!response.features.length) {
-          console.log(chalk.red("No results found!"));
+      const { lng, lat, location } = data;
 
+      DarkSky.fetchWeatherInfo(lat, lng, (error, data) => {
+        if (error) {
+          console.log(error);
           return false;
         }
 
-        const [lng, lat] = response.features[0].center;
-        const { place_name } = response.features[0];
+        const { summary, temperature, humidity, windSpeed } = data.currently;
 
-        // console.log(`Lat=${lat}  Lng=${lng}`);
-
-        DarkSky.fetchWeatherInfo(lat, lng)
-          .then(response => {
-            const { currently } = response;
-
-            console.log(`The weather forecast for ${chalk.red.inverse(
-              place_name
-            )} is:
-                 => Summary: ${currently.summary}
-                 => Temperature (Celsius): ${currently.temperature}        
-                `);
-          })
-          .catch(err => {
-            console.log(
-              chalk.red(
-                "DarkSky: Error while fetching information! More details below"
-              )
-            );
-
-            console.log(err);
-          });
-      })
-      .catch(err => {
-        console.log(
-          chalk.red(
-            "MapBox: Error while fetching information! More details below"
-          )
-        );
-        console.log(err);
+        console.log(`This is the weather summary about ${chalk.red.inverse(
+          location
+        )}: 
+        => Latitude: ${chalk.yellow.inverse(lat)} 
+        => Longitude: ${chalk.yellow.inverse(lng)}
+        => Summary: ${chalk.yellow.inverse(summary)}
+        => Temperature: ${chalk.blue.inverse(temperature + " C")}
+        => Humidity: ${chalk.blue.inverse(humidity + "%")}
+        => Wind Speed: ${chalk.blue.inverse(windSpeed + "mph")}
+        
+        `);
       });
+    });
   }
 }).argv;
